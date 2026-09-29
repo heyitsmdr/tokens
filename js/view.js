@@ -56,6 +56,12 @@ function render() {
   if (prevTokens !== null && tokens !== prevTokens) pulse(tokens - prevTokens);
   prevTokens = tokens;
 
+  const prizeReached = tokens > live.prize;
+  if (shown.prizeReached !== prizeReached) {
+    shown.prizeReached = prizeReached;
+    els.coin.classList.toggle("prize-reached", prizeReached);
+  }
+
   const tokenText = String(tokens);
   if (shown.tokens !== tokenText) els.tokens.dataset.len = String(tokenText.length);
   setText("tokens", els.tokens, tokenText);
