@@ -4,7 +4,7 @@
 //   Project settings (gear icon) -> General -> "Your apps" -> your web app -> SDK setup and configuration -> Config.
 // These values are not secrets: they identify the project to the client. Access is controlled by
 // database.rules.json (and, for now, by the room ID acting as a shared secret).
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyB2BCEplAgy2iaAmKVSqdjHLK8kNFB4lb4",
   authDomain: "tokengame-e1bff.firebaseapp.com",
   databaseURL: "https://tokengame-e1bff-default-rtdb.firebaseio.com",
