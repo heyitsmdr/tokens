@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Token Game</title>
+  <link rel="stylesheet" href="css/controller.css">
+</head>
+<body>
+  <main class="card">
+    <header class="card-header">
+      <h1>Token Game</h1>
+      <p>A stream token game: tokens drain while the game plays and the prize shrinks over play time.
+        Run the controller on any machine; add the view to OBS as a Browser Source.</p>
+    </header>
+    <section>
+      <div class="link-row">
+        <a class="btn btn-primary" id="link-controller" href="controller.html">Open Controller</a>
+        <a class="btn" id="link-view" href="view.html">Open View</a>
+      </div>
+    </section>
+  </main>
+  <script>
+    // Carry ?room= over to both links.
+    const room = new URLSearchParams(location.search).get("room");
+    if (room) {
+      const qs = "?room=" + encodeURIComponent(room);
+      document.getElementById("link-controller").href = "controller.html" + qs;
+      document.getElementById("link-view").href = "view.html" + qs;
+    }
+  </script>
+</body>
+</html>

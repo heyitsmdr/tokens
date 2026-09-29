@@ -1,0 +1,128 @@
+/* OBS Browser Source overlay. Nothing is painted outside the coin and its text. */
+html,
+body {
+  background: transparent;
+  margin: 0;
+  overflow: hidden;
+}
+
+:root {
+  --scale: 1;
+  --coin-size: 260px;
+  --text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.7);
+}
+
+.overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  font-family: "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+  color: #fff;
+  transform: scale(var(--scale));
+  transform-origin: top center;
+}
+
+.coin {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: var(--coin-size);
+  height: var(--coin-size);
+  border-radius: 50%;
+  border: 6px solid #b8860b;
+  box-sizing: border-box;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.55) 0 8%, rgba(255, 255, 255, 0) 30%),
+    radial-gradient(circle at 50% 50%, #ffe27a 0%, #f5c542 45%, #d9a21b 75%, #a8740a 100%);
+  box-shadow:
+    inset 0 0 0 10px rgba(255, 236, 150, 0.55),
+    inset 0 0 0 13px rgba(140, 95, 5, 0.6),
+    inset 0 -10px 24px rgba(120, 70, 0, 0.45),
+    0 6px 16px rgba(0, 0, 0, 0.45);
+}
+
+.coin-value {
+  font-size: 88px;
+  font-weight: 800;
+  line-height: 1;
+  color: #5a3a00;
+  text-shadow: 0 2px 0 rgba(255, 240, 180, 0.8), 0 -1px 0 rgba(90, 55, 0, 0.5);
+  font-variant-numeric: tabular-nums;
+}
+
+.coin-value[data-len="4"] { font-size: 76px; }
+.coin-value[data-len="5"] { font-size: 62px; }
+.coin-value[data-len="6"],
+.coin-value[data-len="7"],
+.coin-value[data-len="8"] { font-size: 48px; }
+
+.coin-label {
+  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(90, 58, 0, 0.75);
+}
+
+.badge {
+  visibility: hidden;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-shadow: var(--text-shadow);
+}
+
+.badge.visible {
+  visibility: visible;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 22px;
+  font-weight: 700;
+  text-shadow: var(--text-shadow);
+  font-variant-numeric: tabular-nums;
+}
+
+.coin.pulse-up {
+  animation: pulse-up 700ms ease-out;
+}
+
+.coin.pulse-down {
+  animation: pulse-down 700ms ease-out;
+}
+
+@keyframes pulse-up {
+  0% { transform: scale(1); }
+  30% {
+    transform: scale(1.06);
+    box-shadow:
+      inset 0 0 0 10px rgba(255, 236, 150, 0.55),
+      inset 0 0 0 13px rgba(140, 95, 5, 0.6),
+      0 0 28px 10px rgba(60, 230, 100, 0.85);
+  }
+  100% { transform: scale(1); }
+}
+
+@keyframes pulse-down {
+  0% { transform: scale(1); }
+  30% {
+    transform: scale(0.97);
+    box-shadow:
+      inset 0 0 0 10px rgba(255, 236, 150, 0.55),
+      inset 0 0 0 13px rgba(140, 95, 5, 0.6),
+      0 0 24px 8px rgba(240, 60, 60, 0.8);
+  }
+  100% { transform: scale(1); }
+}

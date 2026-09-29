@@ -1,0 +1,24 @@
+{
+  // There is no auth in this setup. The root has no .read/.write, so nobody can list
+  // /games and discover other rooms. Anyone who knows a room ID can read and write that
+  // room, which means the room ID acts as a shared secret: use a long, random one.
+  "rules": {
+    "games": {
+      "$roomId": {
+        ".read": "$roomId.length >= 1 && $roomId.length <= 128",
+        ".write": "$roomId.length >= 1 && $roomId.length <= 128",
+        ".validate": "newData.hasChildren(['running', 'anchorAt', 'tokensAtAnchor', 'playMsAtAnchor', 'drainPerMin', 'startingTokens', 'prizeStart', 'prizeStep', 'prizeIntervalMin'])",
+        "running": { ".validate": "newData.isBoolean()" },
+        "anchorAt": { ".validate": "newData.isNumber() && newData.val() >= 0" },
+        "tokensAtAnchor": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000000" },
+        "playMsAtAnchor": { ".validate": "newData.isNumber() && newData.val() >= 0" },
+        "drainPerMin": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000" },
+        "startingTokens": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000000" },
+        "prizeStart": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000000" },
+        "prizeStep": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000000" },
+        "prizeIntervalMin": { ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= 100000" },
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}

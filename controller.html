@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Token Game - Controller</title>
+  <link rel="stylesheet" href="css/controller.css">
+</head>
+<body>
+  <main class="card">
+    <header class="card-header">
+      <h1>Token Game Controller</h1>
+      <p class="room">
+        <span class="conn-dot" id="conn-dot" title="Disconnected"></span>
+        Room: <code id="room-id">-</code>
+      </p>
+    </header>
+
+    <p class="error" id="error" role="alert" hidden></p>
+
+    <section aria-labelledby="status-heading">
+      <h2 id="status-heading">Status</h2>
+      <dl class="readout">
+        <div><dt>Tokens</dt><dd id="out-tokens">-</dd></div>
+        <div><dt>Prize</dt><dd id="out-prize">-</dd></div>
+        <div><dt>Next prize drop</dt><dd id="out-next-drop">-</dd></div>
+        <div><dt>Status</dt><dd id="out-status">-</dd></div>
+      </dl>
+    </section>
+
+    <section aria-labelledby="play-heading">
+      <h2 id="play-heading">Play / Pause</h2>
+      <button type="button" class="btn btn-primary btn-wide" id="btn-toggle" disabled>Play</button>
+    </section>
+
+    <section aria-labelledby="adjust-heading">
+      <h2 id="adjust-heading">Adjust Tokens</h2>
+      <div class="button-row">
+        <button type="button" class="btn btn-minus" data-amount="-100" disabled>-100</button>
+        <button type="button" class="btn btn-minus" data-amount="-50" disabled>-50</button>
+        <button type="button" class="btn btn-plus" data-amount="50" disabled>+50</button>
+        <button type="button" class="btn btn-plus" data-amount="100" disabled>+100</button>
+      </div>
+      <div class="custom-row">
+        <label for="custom-amount">Custom amount</label>
+        <input type="number" id="custom-amount" min="0" step="1" value="10" inputmode="numeric">
+        <button type="button" class="btn btn-minus" id="btn-custom-minus" disabled aria-label="Subtract custom amount">&minus;</button>
+        <button type="button" class="btn btn-plus" id="btn-custom-plus" disabled aria-label="Add custom amount">+</button>
+      </div>
+    </section>
+
+    <section aria-labelledby="settings-heading">
+      <h2 id="settings-heading">Settings</h2>
+      <form id="settings-form" class="form-grid">
+        <label for="set-starting">Starting tokens</label>
+        <input type="number" id="set-starting" min="0" step="1" required>
+        <label for="set-drain">Drain rate (tokens/min)</label>
+        <input type="number" id="set-drain" min="0" step="any" required>
+        <button type="submit" class="btn" disabled>Apply</button>
+      </form>
+      <p class="hint">Starting tokens only take effect on Reset.</p>
+    </section>
+
+    <section>
+      <details>
+        <summary>Advanced: prize settings</summary>
+        <form id="prize-form" class="form-grid">
+          <label for="set-prize-start">Prize start</label>
+          <input type="number" id="set-prize-start" min="0" step="1" required>
+          <label for="set-prize-step">Prize step</label>
+          <input type="number" id="set-prize-step" min="0" step="1" required>
+          <label for="set-prize-interval">Interval (minutes)</label>
+          <input type="number" id="set-prize-interval" min="0.01" step="any" required>
+          <button type="submit" class="btn" disabled>Apply</button>
+        </form>
+      </details>
+    </section>
+
+    <section aria-labelledby="reset-heading">
+      <h2 id="reset-heading">Reset</h2>
+      <button type="button" class="btn btn-danger" id="btn-reset" disabled>Reset game</button>
+      <p class="hint">Restores starting tokens, resets play time and prize, and pauses.</p>
+    </section>
+
+    <section aria-labelledby="obs-heading">
+      <h2 id="obs-heading">OBS URL</h2>
+      <div class="copy-row">
+        <input type="text" id="obs-url" readonly aria-label="OBS Browser Source URL">
+        <button type="button" class="btn" id="btn-copy">Copy</button>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="js/controller.js"></script>
+</body>
+</html>
