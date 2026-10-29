@@ -3,6 +3,7 @@ import { getRoomId, serverNow, subscribe, ensureRoom } from "./db.js";
 
 const TICK_MS = 250;
 const PULSE_FALLBACK_MS = 1000;
+const TOKEN_ANIM_MS = 700;
 
 const els = {
   coin: document.getElementById("coin"),
@@ -21,6 +22,9 @@ const roomId = getRoomId();
 let latestState = null;
 let prevTokens = null;
 let pulseTimer = null;
+let displayedTokens = null;
+let tokenTween = null;
+let tweenFrame = 0;
 const shown = {};
 
 function setText(key, el, text) {
@@ -47,6 +51,40 @@ els.coin.addEventListener("animationend", () => {
   els.coin.classList.remove("pulse-up", "pulse-down");
 });
 
+function showTokens(value) {
+  const text = String(value);
+  if (shown.tokens !== text) els.tokens.dataset.len = String(text.length);
+  setText("tokens", els.tokens, text);
+}
+
+// Count the displayed number toward the target instead of jumping. A new target
+// mid-count restarts from whatever value is currently on screen.
+function animateTokens(target) {
+  if (displayedTokens === null) {
+    displayedTokens = target;
+    showTokens(target);
+    return;
+  }
+  if (target === tokenTween?.to || (!tokenTween && target === displayedTokens)) return;
+  tokenTween = { from: displayedTokens, to: target, start: performance.now() };
+  if (!tweenFrame) tweenFrame = requestAnimationFrame(stepTween);
+}
+
+function stepTween(now) {
+  tweenFrame = 0;
+  if (!tokenTween) return;
+  const { from, to, start } = tokenTween;
+  const t = Math.min(1, (now - start) / TOKEN_ANIM_MS);
+  displayedTokens = from + (to - from) * (1 - (1 - t) ** 3);
+  showTokens(Math.round(displayedTokens));
+  if (t < 1) {
+    tweenFrame = requestAnimationFrame(stepTween);
+  } else {
+    displayedTokens = to;
+    tokenTween = null;
+  }
+}
+
 function render() {
   if (!latestState) return;
   const state = { ...DEFAULTS, ...latestState };
@@ -62,9 +100,7 @@ function render() {
     els.coin.classList.toggle("prize-reached", prizeReached);
   }
 
-  const tokenText = String(tokens);
-  if (shown.tokens !== tokenText) els.tokens.dataset.len = String(tokenText.length);
-  setText("tokens", els.tokens, tokenText);
+  animateTokens(tokens);
   const drain = state.drainPerMin > 0 ? `-${formatRate(state.drainPerMin)}` : "0";
   setText("drain", els.drain, `Drain: ${drain}/min`);
   setText("prize", els.prize, `Prize: ${Math.round(live.prize)}`);
